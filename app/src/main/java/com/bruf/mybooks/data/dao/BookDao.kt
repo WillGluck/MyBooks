@@ -12,12 +12,12 @@ interface BookDao {
     fun getAll(): Flow<List<Book>>
 
     @Query("SELECT * FROM book WHERE id = :id")
-    fun get(id:String): Book
+    suspend fun get(id:String): Book
 
     @Insert
-    fun insertBook(book: Book)
+    suspend fun insertBook(book: Book)
 
     @Delete
-    fun deleteBook(book: Book)
+    suspend fun deleteBook(book: Book)
 
 }
