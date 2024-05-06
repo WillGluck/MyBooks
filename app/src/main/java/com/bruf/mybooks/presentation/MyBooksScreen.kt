@@ -1,7 +1,10 @@
 package com.bruf.mybooks.presentation
 
-enum class MyBooksScreen {
-    Main,
-    BookList,
-    AddBook
+import androidx.annotation.StringRes
+import com.bruf.mybooks.R
+
+enum class MyBooksScreen(@StringRes val title: Int) {
+    Main(R.string.my_books),
+    BookList(R.string.book_list),
+    AddBook(R.string.add_book)
 }
