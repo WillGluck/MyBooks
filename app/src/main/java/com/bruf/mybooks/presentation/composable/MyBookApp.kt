@@ -15,6 +15,8 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
@@ -24,7 +26,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.bruf.mybooks.R
+import com.bruf.mybooks.domain.model.Book
 import com.bruf.mybooks.presentation.MyBooksScreen
+import java.util.Collections.shuffle
+import kotlin.random.Random
 
 @Composable
 fun MyBookApp(){
@@ -34,6 +39,21 @@ fun MyBookApp(){
     val currentScreen = MyBooksScreen.valueOf(
         backstackEntry?.destination?.route ?: MyBooksScreen.Main.name
     )
+    val mockBooks = mutableListOf<Book>()
+    val text = "abcdefghijklmnopqrstuvxz"
+    repeat(10) {
+        mockBooks.add(
+            Book(
+                String(text.toByteArray().apply {shuffle()}),
+                String(text.toByteArray().apply {shuffle()}),
+                String(text.toByteArray().apply {shuffle()})
+            )
+        )
+    }
+
+    val books by remember {
+        mutableStateOf(mockBooks.toList())
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -63,7 +83,8 @@ fun MyBookApp(){
                 BookListScreen(
                     modifier = Modifier
                         .padding(dimensionResource(id = R.dimen.padding_medium))
-                        .fillMaxSize()
+                        .fillMaxSize(),
+                    books = books
                 )
             }
             composable(route = MyBooksScreen.AddBook.name) {
