@@ -11,13 +11,7 @@ interface BookDao {
     @Query("SELECT * FROM book")
     fun getAll(): Flow<List<Book>>
 
-    @Query("SELECT * FROM book WHERE id = :id")
-    suspend fun get(id:String): Book
-
     @Insert
     suspend fun insertBook(book: Book)
-
-    @Delete
-    suspend fun deleteBook(book: Book)
 
 }
