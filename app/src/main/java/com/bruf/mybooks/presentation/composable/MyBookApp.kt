@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -18,18 +17,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.bruf.mybooks.R
 import com.bruf.mybooks.domain.model.Book
 import com.bruf.mybooks.presentation.MyBooksScreen
-import java.util.Collections.shuffle
-import kotlin.random.Random
 
 @Composable
 fun MyBookApp(){
@@ -44,6 +42,7 @@ fun MyBookApp(){
     repeat(10) {
         mockBooks.add(
             Book(
+                String(text.toByteArray().apply {shuffle()}),
                 String(text.toByteArray().apply {shuffle()}),
                 String(text.toByteArray().apply {shuffle()}),
                 String(text.toByteArray().apply {shuffle()})
@@ -84,17 +83,31 @@ fun MyBookApp(){
                     modifier = Modifier
                         .padding(dimensionResource(id = R.dimen.padding_medium))
                         .fillMaxSize(),
-                    books = books
+                    books = books,
+                    onBookClicked = {
+                        navController.navigate("${MyBooksScreen.EditBook.name}/${it.id}")
+                    }
                 )
             }
             composable(route = MyBooksScreen.AddBook.name) {
-                AddBookScreen(
+                BookScreen(
                     modifier = Modifier
                         .padding(dimensionResource(id = R.dimen.padding_medium))
                         .fillMaxSize()
                 )
             }
-
+            val bookIdKey = "bookId"
+            composable(
+                route = "${MyBooksScreen.EditBook.name}/$bookIdKey",
+                arguments = listOf(navArgument(bookIdKey) { type = NavType.StringType })
+            ) {
+                BookScreen(
+                    modifier = Modifier
+                        .padding(dimensionResource(id = R.dimen.padding_medium))
+                        .fillMaxSize(),
+                    bookId = backstackEntry?.arguments?.getString(bookIdKey)
+                )
+            }
 
         }
     }

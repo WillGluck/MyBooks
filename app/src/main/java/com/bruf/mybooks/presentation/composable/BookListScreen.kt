@@ -1,5 +1,6 @@
 package com.bruf.mybooks.presentation.composable
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -24,14 +25,17 @@ import java.util.Collections.shuffle
 @Composable
 fun BookListScreen(
     modifier:Modifier = Modifier,
-    books: List<Book> = emptyList()
+    books: List<Book> = emptyList(),
+    onBookClicked: (Book) -> Unit
 ) {
     Column {
         LazyColumn(
             modifier = modifier
         ) {
             items(books) { book ->
-                Column {
+                Column(modifier = Modifier.clickable {
+                    onBookClicked(book)
+                }) {
                     Text(
                         text = book.title,
                         style = MaterialTheme.typography.titleMedium

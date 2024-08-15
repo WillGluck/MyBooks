@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">MyBooks</string>
     <string name="add_book">Add Book</string>
+    <string name="edit_book">Edit Book</string>
     <string name="book_list">Book List</string>
     <string name="my_books">My Books</string>
     <string name="title">Book title</string>
