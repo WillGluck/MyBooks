@@ -8,5 +8,4 @@ enum class MyBooksScreen(@StringRes val title: Int) {
     BookList(R.string.book_list),
     AddBook(R.string.add_book),
     EditBook(R.string.edit_book)
-
 }
