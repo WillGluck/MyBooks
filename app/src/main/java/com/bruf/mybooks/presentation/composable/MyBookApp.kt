@@ -28,6 +28,7 @@ import androidx.navigation.navArgument
 import com.bruf.mybooks.R
 import com.bruf.mybooks.domain.model.Book
 import com.bruf.mybooks.presentation.MyBooksScreen
+import kotlin.random.Random
 
 @Composable
 fun MyBookApp(){
@@ -42,7 +43,7 @@ fun MyBookApp(){
     repeat(10) {
         mockBooks.add(
             Book(
-                String(text.toByteArray().apply {shuffle()}),
+                Random.nextInt(),
                 String(text.toByteArray().apply {shuffle()}),
                 String(text.toByteArray().apply {shuffle()}),
                 String(text.toByteArray().apply {shuffle()})
