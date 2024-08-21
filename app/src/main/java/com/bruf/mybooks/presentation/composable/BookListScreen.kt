@@ -15,19 +15,25 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bruf.mybooks.R
 import com.bruf.mybooks.domain.model.Book
+import com.bruf.mybooks.presentation.viewmodel.BookListViewModel
 import java.util.Collections.shuffle
 
 @Composable
 fun BookListScreen(
     modifier:Modifier = Modifier,
-    books: List<Book> = emptyList(),
+    bookListViewModel: BookListViewModel = hiltViewModel(),
     onBookClicked: (Book) -> Unit
 ) {
+    val books = bookListViewModel.bookList.collectAsState().value
+
     Column {
         LazyColumn(
             modifier = modifier

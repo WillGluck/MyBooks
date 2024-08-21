@@ -16,11 +16,14 @@ class BookRepositoryImpl @Inject constructor(
             emit(it.map { e -> Book(e.id, e.name, e.description, e.author)})
         }
 
-
     override suspend fun insert(book: Book) {
         dao.insertBook(com.bruf.mybooks.data.entity.Book(
-            book.id, book.title, book.author, book.description
+            name = book.title, author = book.author, description = book.description
         ))
     }
 
+    override suspend fun get(id: String): Book =
+        dao.get(id).run {
+            Book(this.id, name, description, author)
+        }
 }

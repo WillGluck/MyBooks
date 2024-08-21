@@ -15,4 +15,6 @@ interface BookDao {
     @Insert
     suspend fun insertBook(book: Book)
 
+    @Query("SELECT * FROM book WHERE book.id = :id")
+    suspend fun get(id:String): Book
 }

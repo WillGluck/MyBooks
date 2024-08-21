@@ -14,8 +14,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -27,7 +25,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.bruf.mybooks.R
 import com.bruf.mybooks.domain.model.Book
-import com.bruf.mybooks.presentation.MyBooksScreen
+import com.bruf.mybooks.presentation.enums.MyBooksScreen
 import kotlin.random.Random
 
 @Composable
@@ -36,7 +34,8 @@ fun MyBookApp(){
     val navController = rememberNavController()
     val backstackEntry by navController.currentBackStackEntryAsState()
     val currentScreen = MyBooksScreen.valueOf(
-        backstackEntry?.destination?.route ?: MyBooksScreen.Main.name
+        backstackEntry?.destination?.route?.split("/")?.get(0)
+            ?: MyBooksScreen.Main.name
     )
     val mockBooks = mutableListOf<Book>()
     val text = "abcdefghijklmnopqrstuvxz"
@@ -49,10 +48,6 @@ fun MyBookApp(){
                 String(text.toByteArray().apply {shuffle()})
             )
         )
-    }
-
-    val books by remember {
-        mutableStateOf(mockBooks.toList())
     }
 
     Scaffold(
@@ -84,7 +79,6 @@ fun MyBookApp(){
                     modifier = Modifier
                         .padding(dimensionResource(id = R.dimen.padding_medium))
                         .fillMaxSize(),
-                    books = books,
                     onBookClicked = {
                         navController.navigate("${MyBooksScreen.EditBook.name}/${it.id}")
                     }
@@ -99,14 +93,14 @@ fun MyBookApp(){
             }
             val bookIdKey = "bookId"
             composable(
-                route = "${MyBooksScreen.EditBook.name}/$bookIdKey",
+                route = "${MyBooksScreen.EditBook.name}/{$bookIdKey}",
                 arguments = listOf(navArgument(bookIdKey) { type = NavType.StringType })
             ) {
                 BookScreen(
                     modifier = Modifier
                         .padding(dimensionResource(id = R.dimen.padding_medium))
                         .fillMaxSize(),
-                    bookId = backstackEntry?.arguments?.getString(bookIdKey)
+                    bookId = it.arguments?.getString(bookIdKey)
                 )
             }
 

@@ -1,4 +1,4 @@
-package com.bruf.mybooks.presentation
+package com.bruf.mybooks.presentation.enums
 
 import androidx.annotation.StringRes
 import com.bruf.mybooks.R
