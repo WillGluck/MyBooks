@@ -17,12 +17,22 @@ class BookRepositoryImpl @Inject constructor(
         }
 
     override suspend fun insert(book: Book) {
-        dao.insertBook(com.bruf.mybooks.data.entity.Book(
+        dao.insert(com.bruf.mybooks.data.entity.Book(
             name = book.title, author = book.author, description = book.description
         ))
     }
 
-    override suspend fun get(id: String): Book =
+    override suspend fun update(book:Book) {
+        if (book.id != null)
+            dao.update(com.bruf.mybooks.data.entity.Book(
+                id = book.id,
+                name = book.title,
+                author = book.author,
+                description = book.description
+            ))
+    }
+
+    override suspend fun get(id: Int): Book =
         dao.get(id).run {
             Book(this.id, name, description, author)
         }

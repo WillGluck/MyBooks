@@ -32,6 +32,7 @@ fun BookListScreen(
     bookListViewModel: BookListViewModel = hiltViewModel(),
     onBookClicked: (Book) -> Unit
 ) {
+
     val books = bookListViewModel.bookList.collectAsState().value
 
     Column {

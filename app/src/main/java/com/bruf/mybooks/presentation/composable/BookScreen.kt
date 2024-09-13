@@ -29,10 +29,14 @@ import com.bruf.mybooks.presentation.viewmodel.BookScreenViewModel
 fun BookScreen(
     modifier:Modifier = Modifier,
     viewModel: BookScreenViewModel = hiltViewModel(),
-    bookId: String? = null
+    bookId: Int? = null
 ) {
 
-    var book = viewModel.book.collectAsState().value
+    bookId?.let {
+        viewModel.loadBook(it)
+    }
+
+    val book = viewModel.book.collectAsState().value
 
     Column(
         verticalArrangement = Arrangement.Center,
@@ -40,10 +44,7 @@ fun BookScreen(
     ) {
         OutlinedTextField(
             value = book.title,
-            onValueChange = {
-                Log.d("WILL", "Teste: $it")
-                book = book.copy(title = it)
-            },
+            onValueChange =  viewModel::setTile,
             label = { Text(text = stringResource(R.string.title)) },
             modifier = Modifier.fillMaxWidth()
         )
@@ -52,7 +53,7 @@ fun BookScreen(
         )
         OutlinedTextField(
             value = book.description,
-            onValueChange = { book.description = it },
+            onValueChange = viewModel::setDescription,
             label = { Text(text = stringResource(R.string.description))},
             modifier = Modifier
                 .fillMaxWidth()
@@ -63,7 +64,7 @@ fun BookScreen(
         )
         OutlinedTextField(
             value = book.author,
-            onValueChange = { book.author = it },
+            onValueChange = viewModel::setAuthor,
             label = { Text(text = stringResource(R.string.author)) },
             modifier = Modifier.fillMaxWidth()
         )
@@ -82,7 +83,7 @@ fun BookScreen(
                 modifier = Modifier.width(dimensionResource(id = R.dimen.spacer_small))
             )
             Button(
-                onClick = { viewModel.insertBook() },
+                onClick = { viewModel.insertOrUpdateBook() },
                 modifier = Modifier.weight(1f)
             ) {
                 Text(text = stringResource(R.string.save))

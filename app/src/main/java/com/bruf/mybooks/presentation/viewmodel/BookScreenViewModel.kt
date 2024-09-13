@@ -19,21 +19,51 @@ class BookScreenViewModel @Inject constructor(
 ):ViewModel() {
 
     private var _book = MutableStateFlow(
-        Book(title = "asd", description = "asd", author = "asd")
+        Book(title = "", description = "", author = "")
     )
-    var book = _book.asStateFlow()
+    val book = _book.asStateFlow()
 
-    fun loadBook(id:String) {
+    fun loadBook(id:Int) {
+        viewModelScope.launch {
+            if (_book.value.id != id)
+                _book.update {
+                    repository.get(id)
+                }
+        }
+    }
+
+    fun setTile(title:String) {
         viewModelScope.launch {
             _book.update {
-                repository.get(id)
+                it.copy(title = title)
             }
         }
     }
 
-    fun insertBook() {
+    fun setDescription(description:String) {
         viewModelScope.launch {
-            repository.insert(_book.value)
+            _book.update {
+                it.copy(description = description)
+            }
+        }
+    }
+
+    fun setAuthor(author:String) {
+        viewModelScope.launch {
+            _book.update {
+                it.copy(author = author)
+            }
+        }
+    }
+
+    fun insertOrUpdateBook() {
+        viewModelScope.launch {
+            _book.value.run {
+                if (this.id != null)
+                    repository.update(this)
+                else
+                    repository.insert(this)
+            }
         }
     }
 

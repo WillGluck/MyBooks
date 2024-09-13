@@ -94,13 +94,13 @@ fun MyBookApp(){
             val bookIdKey = "bookId"
             composable(
                 route = "${MyBooksScreen.EditBook.name}/{$bookIdKey}",
-                arguments = listOf(navArgument(bookIdKey) { type = NavType.StringType })
+                arguments = listOf(navArgument(bookIdKey) { type = NavType.IntType })
             ) {
                 BookScreen(
                     modifier = Modifier
                         .padding(dimensionResource(id = R.dimen.padding_medium))
                         .fillMaxSize(),
-                    bookId = it.arguments?.getString(bookIdKey)
+                    bookId = it.arguments?.getInt(bookIdKey)
                 )
             }
 

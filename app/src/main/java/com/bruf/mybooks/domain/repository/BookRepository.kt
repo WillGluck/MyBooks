@@ -9,6 +9,8 @@ interface BookRepository {
 
     suspend fun insert(book:Book):Unit
 
-    suspend fun get(id:String): Book
+    suspend fun update(book:Book)
+
+    suspend fun get(id:Int): Book
 
 }

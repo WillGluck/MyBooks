@@ -12,6 +12,6 @@ class BookRoomDataSource @Inject constructor(
     override fun getAll(): Flow<List<Book>> = dao.getAll()
 
 
-    override suspend fun insert(book: Book) = dao.insertBook(book)
+    override suspend fun insert(book: Book) = dao.insert(book)
 
 }
